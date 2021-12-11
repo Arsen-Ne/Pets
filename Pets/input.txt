@@ -1,0 +1,8 @@
+ann,dog,sharik,4
+ann,frog,,2
+ars,,,88
+,,pl,8 
+,dog,pl,8 
+ann,dog,,5
+ann,doggy,sharik,5
+ayyy,dog,sharik,18
