@@ -1,8 +1,11 @@
-ann,dog,sharik,4
+ann, dog,sharik,4
 ann,frog,,2
 ars,,,88
 ,,pl,8 
 ,dog,pl,8 
-ann,dog,,5
+an n,dog ,,5
 ann,doggy,sharik,5
-ayyy,dog,sharik,18
+ayyy,dog  ,sharik,18
+ayyy,dog  ,sharikkk,
+ayyy,cat,sharikkk,
+ayyy,cat,murrrr,

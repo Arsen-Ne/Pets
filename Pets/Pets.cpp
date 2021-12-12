@@ -3,15 +3,18 @@
 #include <sstream>
 #include <string>
 #include <set>
+#include <unordered_set>
 #include <map>
+#include <unordered_map>
 #include <Windows.h>
+#include <regex>
 
 using namespace std;
 
 map <string, set<string>> ownerPets; // 1
 multimap <string, pair<string, string>> pets; // 2?
 map <string, pair<set<string>, set<string>>> typeOwnersNicks; // 2
-map <string, set<string>> nicks; // 3
+unordered_map <string, unordered_set<string>> nicks; // 3
 map <string, set<int>> ages; // 4
 
 struct record {
@@ -89,7 +92,7 @@ void printTypeOwnersAndNicks(string type) {
 void addToNicks(record pet) {
     auto it = nicks.find(pet.nick);
     if (it == nicks.end()) {
-        set<string> tmp;
+        unordered_set<string> tmp;
         tmp.insert(pet.type);
         nicks.insert(make_pair(pet.nick, tmp));
     }
@@ -101,7 +104,7 @@ void addToNicks(record pet) {
 void printNicks(string nick) {
     auto it = nicks.find(nick);
     if (it != nicks.end()) {        
-        cout << it->second.size() << endl;
+        cout << it->second.size() << " вида животных носит такую кличку" << endl;
     }
     else {
         cout << "Такая кличка не найдена" << endl;
@@ -138,6 +141,20 @@ void printTypeAges() {
     }
 }
 
+string trim(string &str) {
+  return regex_replace(str, regex("(^[ ]+)|([ ]+$)"), "");
+}
+
+
+void printComand() {
+    cout << "нажмите" << endl;
+    cout << "0 - для выхода" << endl;
+    cout << "1 - сколько разных видов животных" << endl;
+    cout << "2 - вывести всех владельцев и клички введённого вида животного" << endl;
+    cout << "3 - вывести сколько видов животных носит введённую кличку" << endl;
+    cout << "4 - вывести самых старых и самых молодых животных всех видов" << endl;
+    cout << "5 - вывести команды" << endl;
+}
 int main() 
 {
     SetConsoleCP(1251);
@@ -152,12 +169,16 @@ int main()
         getline(in, line);
         stringstream ss(line);
         getline(ss, word, ',');
+        word = trim(word);
         pet.owner = (!word.empty()) ? word : "бездомный";
         getline(ss, word, ',');
+        word = trim(word);
         pet.type = (!word.empty()) ? word : "неизвестен";
         getline(ss, word, ',');
+        word = trim(word);
         pet.nick = (!word.empty()) ? word : "безымянный";
-        getline(ss, word, ',');                
+        getline(ss, word, ',');
+        word = trim(word);
         if (!word.empty()) {
             try {
                 pet.age = stoi(word);
@@ -177,9 +198,41 @@ int main()
     }
     in.close();
 
-    printOwnerPets();       
-    //printTypeOwnersAndNicks("dog");
-    //printNicks("sharik");
-    //printTypeAges();
+    printComand();
 
+    while (true) {
+        cout << endl << "введите ключ операции: ";
+        int s;
+        cin >> s;
+        string animal;
+        string name;
+        switch (s) {
+        case 0:
+            return 0;
+        case 1:
+            printOwnerPets();
+            break;
+        case 2:
+            cout << "введите вид животного: ";
+            cin >> animal;            
+            printTypeOwnersAndNicks(animal);
+            break;
+        case 3:
+            cout << "введите кличку: ";
+            cin >> name;
+            printNicks(name);
+            break;
+        case 4:
+            printTypeAges();
+            break;
+        case 5:
+            printComand();
+            break;
+        default:
+            cout << "Неправильный ключ, введите нужный ключ: ";
+            break;
+        }
+    }
 }
+
+
